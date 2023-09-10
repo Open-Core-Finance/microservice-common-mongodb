@@ -55,7 +55,7 @@ dependencies {
     api group: 'org.springframework.data', name: 'spring-data-commons'
     api group: 'org.springframework.boot', name: 'spring-boot-starter-security'
     // Spring doc
-    api group: 'com.finance.core', name: 'microservice-common', version: '0.0.1-SNAPSHOT'
+    // api group: 'com.finance.core', name: 'microservice-common', version: '0.0.1-SNAPSHOT'
 
     // Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
