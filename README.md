@@ -11,7 +11,7 @@ For more information please refer [About Open Core Finance](https://core-finance
 
 ## Features
 - Common MongoDB config
-- 
+
 ## Contact info
 
 Developer: Doan Bao Trung
