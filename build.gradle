@@ -27,7 +27,7 @@ plugins {
 }
 
 group = 'tech.corefinance'
-version = '0.0.1-SNAPSHOT'
+version = "${projectVersion}"
 java {
     sourceCompatibility = "${javaSourceCompatibility}"
     targetCompatibility = "${javaSourceCompatibility}"
@@ -73,13 +73,8 @@ bootJar {
 
 dependencies {
     // Spring
-    api 'org.springframework.boot:spring-boot-starter'
-    api "org.springframework.boot:spring-boot-starter-tomcat"
-    api('org.springframework.boot:spring-boot-starter-validation')
-    api group: 'org.springframework.boot', name: 'spring-boot-starter-web'
-    api group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
-    api group: 'org.springframework.data', name: 'spring-data-commons'
-    api group: 'org.springframework.boot', name: 'spring-boot-starter-security'
+    api ('org.springframework.boot:spring-boot-starter-data-mongodb')
+
     // Internal
     api group: 'tech.corefinance', name: 'microservice-common', version: "${internalCommonVersion}"
 
@@ -91,7 +86,7 @@ dependencies {
 
 jacoco {
     toolVersion = "${jacocoToolVersion}"
-    reportsDirectory = file("$buildDir/jacoco")
+    reportsDirectory = layout.buildDirectory.dir("jacoco").get()
 }
 
 test {
@@ -102,9 +97,9 @@ test {
     finalizedBy jacocoTestReport
 
     jacoco {
-        classDumpDir = file("$buildDir/jacoco/classpathdumps")
+        classDumpDir = layout.buildDirectory.file("jacoco/classpathdumps").get().asFile
         enabled = true
-        destinationFile = file("$buildDir/jacoco/${name}.exec")
+        destinationFile = layout.buildDirectory.file("jacoco/${name}.exec").get().asFile
         includes = []
         excludes = []
         excludeClassLoaders = []
@@ -128,14 +123,14 @@ jacocoTestReport {
         html.required = true
         xml.required = true
         csv.required = true
-        html.destination file("${buildDir}/jacoco/html")
-        xml.destination file("${buildDir}/jacoco/jacoco-report.xml")
-        csv.destination file("${buildDir}/jacoco/jacoco-report.csv")
+        html.outputLocation = layout.buildDirectory.dir("jacoco/html").get().asFile
+        xml.outputLocation = layout.buildDirectory.file("jacoco/jacoco-report.xml").get().asFile
+        csv.outputLocation = layout.buildDirectory.file("jacoco/jacoco-report.csv").get().asFile
     }
 
     afterEvaluate {
         getClassDirectories().setFrom(classDirectories.files.collect {
-            fileTree(dir: it, exclude: ['**/ex/*', '**/pojo'])
+            fileTree(dir: it, exclude: ['**/ex/*', '**/pojo/*', '**/model/*', '**/dto/*', '**/config/*'])
         })
     }
 }
