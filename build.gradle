@@ -22,16 +22,38 @@ plugins {
     id 'jacoco'
     id "io.freefair.lombok" version "${lombokPluginVersion}"
     id "org.sonarqube" version "${sonarqubePluginVersion}"
+    id 'maven-publish'
+    // id 'signing'
 }
 
-group = 'com.finance.core'
+group = 'tech.corefinance'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = "${javaSourceCompatibility}"
-targetCompatibility = "${javaSourceCompatibility}"
+java {
+    sourceCompatibility = "${javaSourceCompatibility}"
+    targetCompatibility = "${javaSourceCompatibility}"
+}
+
+apply from: 'artifact-credential.gradle'
 
 repositories {
 	mavenLocal()
 	mavenCentral()
+    maven {
+        url = "${artifactSnapshotUrl}"
+        credentials {
+            username = "${artifactUsername}"
+            password = "${artifactPassword}"
+        }
+        allowInsecureProtocol = true
+    }
+    maven {
+        url = "${artifactReleaseUrl}"
+        credentials {
+            username = "${artifactUsername}"
+            password = "${artifactPassword}"
+        }
+        allowInsecureProtocol = true
+    }
 }
 
 dependencyManagement {
@@ -39,6 +61,10 @@ dependencyManagement {
         mavenBom "org.springframework.boot:spring-boot-dependencies:$springBootPluginVersion"
         mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
     }
+}
+
+jar {
+    archiveClassifier = ""
 }
 
 bootJar {
@@ -54,8 +80,8 @@ dependencies {
     api group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
     api group: 'org.springframework.data', name: 'spring-data-commons'
     api group: 'org.springframework.boot', name: 'spring-boot-starter-security'
-    // Spring doc
-    // api group: 'com.finance.core', name: 'microservice-common', version: '0.0.1-SNAPSHOT'
+    // Internal
+    api group: 'tech.corefinance', name: 'microservice-common', version: "${internalCommonVersion}"
 
     // Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
