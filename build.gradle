@@ -23,7 +23,7 @@ plugins {
     id "io.freefair.lombok" version "${lombokPluginVersion}"
     id "org.sonarqube" version "${sonarqubePluginVersion}"
     id 'maven-publish'
-    // id 'signing'
+    id 'signing'
 }
 
 group = 'tech.corefinance'
@@ -38,22 +38,6 @@ apply from: 'artifact-credential.gradle'
 repositories {
 	mavenLocal()
 	mavenCentral()
-    maven {
-        url = "${artifactSnapshotUrl}"
-        credentials {
-            username = "${artifactUsername}"
-            password = "${artifactPassword}"
-        }
-        allowInsecureProtocol = true
-    }
-    maven {
-        url = "${artifactReleaseUrl}"
-        credentials {
-            username = "${artifactUsername}"
-            password = "${artifactPassword}"
-        }
-        allowInsecureProtocol = true
-    }
 }
 
 dependencyManagement {
@@ -73,7 +57,9 @@ bootJar {
 
 dependencies {
     // Spring
-    api ('org.springframework.boot:spring-boot-starter-data-mongodb')
+    api ('org.springframework.boot:spring-boot-starter-data-mongodb') {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter'
+    }
 
     // Internal
     api group: 'tech.corefinance', name: 'microservice-common', version: "${internalCommonVersion}"
@@ -133,4 +119,74 @@ jacocoTestReport {
             fileTree(dir: it, exclude: ['**/ex/*', '**/pojo/*', '**/model/*', '**/dto/*', '**/config/*'])
         })
     }
+}
+
+task javadocJar (type :Jar, dependsOn: javadoc) {
+    from javadoc.destinationDir
+    archiveClassifier='javadoc'
+    description='Creates a Javadoc Jar'
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    archiveClassifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+publishing {
+    repositories {
+        maven {
+            url = version.endsWith('SNAPSHOT') ? "${artifactSnapshotUrl}" : "${artifactReleaseUrl}"
+            credentials {
+                username = "${artifactUsername}"
+                password = "${artifactPassword}"
+            }
+            allowInsecureProtocol = true
+        }
+    }
+    publications {
+        group = group
+        version = version
+
+        mavenJava(MavenPublication) {
+            from components.java
+            artifact sourcesJar
+            artifact javadocJar
+
+            pom {
+                name = 'Microservice Common'
+                description = 'Common module for microservices of Open Core Finance project.'
+                url = 'https://corefinance.tech/'
+                properties = [ "lib.name": "microservice-common" ]
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'dbaotrung'
+                        name = 'Trung Doan'
+                        email = 'doanbaotrung@gmail.com'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:ssh://git@github.com:Open-Core-Finance/microservice-common.git'
+                    developerConnection = 'scm:git:ssh://git@github.com:Open-Core-Finance/microservice-common.git'
+                    url = 'https://github.com/Open-Core-Finance/microservice-common'
+                }
+            }
+        }
+    }
+}
+
+publish.dependsOn(':build')
+publish.mustRunAfter(':build')
+
+signing {
+    sign publishing.publications
 }
