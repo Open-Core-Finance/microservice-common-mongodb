@@ -16,7 +16,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Component
-@ConditionalOnProperty(name = "tech.corefinance.common-mongodb.converter.zonedDateTime", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(name = "tech.corefinance.common-mongodb.converter.zoned-date-time", havingValue = "true", matchIfMissing = true)
 @ReadingConverter
 public class DocumentToZonedDateTimeConverter
         implements MongoConversionSupport<Document, ZonedDateTime>, GenericConverter {
