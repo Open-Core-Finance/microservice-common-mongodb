@@ -15,6 +15,6 @@ public class MongoPermissionServiceTest {
 
     @Test
     public void test_newPermission() {
-        assertNotNull(mongoPermissionService.newPermission());
+        assertNotNull(mongoPermissionService.createEntityObject());
     }
 }
