@@ -24,13 +24,13 @@ public class MongoSequenceCustomRepository {
 
     public long nextSequence(String seqName) {
         MongoSequence mongoSequence = mongoOperations.findAndModify(query(where("_id").is(seqName)),
-                new Update().inc("seq",1), options().returnNew(true).upsert(true),
+                new Update().inc("sequence",1), options().returnNew(false).upsert(true),
                 MongoSequence.class);
         if (Objects.isNull(mongoSequence) || Objects.isNull(mongoSequence.sequence())) {
             synchronized (lock) {
                 // Double DB query for multiple thread processing
                 mongoSequence = mongoOperations.findAndModify(query(where("_id").is(seqName)),
-                        new Update().inc("seq", 1), options().returnNew(true).upsert(true),
+                        new Update().inc("sequence", 1), options().returnNew(true).upsert(true),
                         MongoSequence.class);
                 if (Objects.isNull(mongoSequence) || Objects.isNull(mongoSequence.sequence())) {
                     mongoSequence = new MongoSequence(seqName, 1L);
