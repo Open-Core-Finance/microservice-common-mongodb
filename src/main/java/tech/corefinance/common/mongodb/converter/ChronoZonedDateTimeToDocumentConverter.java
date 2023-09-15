@@ -14,7 +14,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConditionalOnProperty(name = "tech.corefinance.common-mongodb.converter.zonedDateTime", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(name = "tech.corefinance.common-mongodb.converter.zoned-date-time", havingValue = "true", matchIfMissing = true)
 @WritingConverter
 public class ChronoZonedDateTimeToDocumentConverter
         implements MongoConversionSupport<ChronoZonedDateTime<?>, Document>, GenericConverter {

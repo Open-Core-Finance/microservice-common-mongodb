@@ -38,6 +38,14 @@ apply from: 'artifact-credential.gradle'
 repositories {
 	mavenLocal()
 	mavenCentral()
+    maven {
+        credentials {
+            username = "${artifactUsername}"
+            password = "${artifactPassword}"
+        }
+        url = "${artifactSnapshotUrl}"
+        allowInsecureProtocol = true
+    }
 }
 
 dependencyManagement {
@@ -58,8 +66,14 @@ bootJar {
 dependencies {
     // Spring
     api ('org.springframework.boot:spring-boot-starter-data-mongodb') {
+        // Exclude because current version of snakeyaml have vulnerabilities. Need re-define.
         exclude group: 'org.springframework.boot', module: 'spring-boot-starter'
     }
+    api ('org.springframework.boot:spring-boot-starter') {
+        // Exclude because current version of snakeyaml have vulnerabilities. Need re-define.
+        exclude group: 'org.yaml', module: 'snakeyaml'
+    }
+    api group: 'org.yaml', name: 'snakeyaml', version: "${snakeyamlVersion}"
 
     // Internal
     api group: 'tech.corefinance', name: 'microservice-common', version: "${internalCommonVersion}"
@@ -67,8 +81,8 @@ dependencies {
     // Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation group: 'org.powermock', name: 'powermock-api-mockito2', version: "${powerMockitoVersion}"
+    testImplementation group: 'de.flapdoodle.embed', name: 'de.flapdoodle.embed.mongo', version: "${embededMongoVersion}"
 }
-
 
 jacoco {
     toolVersion = "${jacocoToolVersion}"

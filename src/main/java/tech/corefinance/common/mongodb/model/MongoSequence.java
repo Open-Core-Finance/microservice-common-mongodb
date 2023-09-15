@@ -6,8 +6,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.UUID;
 
 @Document(collection = "mongo_sequense")
-public record MongoSequense(@Id String id, long sequense) {
-    public MongoSequense() {
-        this(UUID.randomUUID().toString(), 0);
+public record MongoSequence(@Id String id, Long sequence) {
+    public MongoSequence() {
+        this(UUID.randomUUID().toString(), 0L);
     }
 }

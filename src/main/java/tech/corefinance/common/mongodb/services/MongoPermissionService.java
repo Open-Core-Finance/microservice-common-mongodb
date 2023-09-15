@@ -5,8 +5,10 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestMethod;
 import tech.corefinance.common.mongodb.model.MongoInternalServiceConfig;
 import tech.corefinance.common.mongodb.model.MongoPermission;
+import tech.corefinance.common.mongodb.model.MongoResourceAction;
 import tech.corefinance.common.service.AbstractPermissionService;
 
 import java.io.IOException;
@@ -15,7 +17,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class MongoPermissionService extends AbstractPermissionService<MongoPermission, MongoInternalServiceConfig> {
+public class MongoPermissionService extends AbstractPermissionService<MongoPermission, MongoInternalServiceConfig, MongoResourceAction> {
 
     @Override
     protected List<MongoPermission> initialPermissions(List<Resource> permissionResources) throws IOException {
@@ -42,5 +44,11 @@ public class MongoPermissionService extends AbstractPermissionService<MongoPermi
     @Override
     public @NotNull MongoPermission newPermission() {
         return new MongoPermission();
+    }
+
+    @Override
+    public @NotNull MongoResourceAction newResourceAction(String resourceType, String action, String url,
+                                                          RequestMethod requestMethod) {
+        return new MongoResourceAction(resourceType, action, url, requestMethod);
     }
 }
