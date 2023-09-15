@@ -73,6 +73,7 @@ dependencies {
     // Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation group: 'org.powermock', name: 'powermock-api-mockito2', version: "${powerMockitoVersion}"
+    testImplementation group: 'org.testcontainers', name: 'mongodb', version: "${testcontainersVersion}"
 }
 
 

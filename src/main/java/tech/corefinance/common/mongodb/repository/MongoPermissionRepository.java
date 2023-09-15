@@ -9,12 +9,14 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestMethod;
 import tech.corefinance.common.mongodb.model.MongoPermission;
+import tech.corefinance.common.repository.PermissionRepository;
 
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface MongoPermissionRepository extends MongoRepository<MongoPermission, String> {
+public interface MongoPermissionRepository extends MongoRepository<MongoPermission, String>,
+        PermissionRepository<MongoPermission> {
 
     Optional<MongoPermission> findFirstByRoleIdAndResourceTypeAndActionAndUrlAndRequestMethod(String roleId, String resourceType, String action, String url, RequestMethod requestMethod);
 

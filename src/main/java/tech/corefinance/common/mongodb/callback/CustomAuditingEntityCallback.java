@@ -1,4 +1,4 @@
-package tech.corefinance.common.mongodb.audit;
+package tech.corefinance.common.mongodb.callback;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.ObjectFactory;
