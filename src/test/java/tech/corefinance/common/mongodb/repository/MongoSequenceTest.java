@@ -41,6 +41,6 @@ public class MongoSequenceTest {
         entity = customSequentialIdDataRepository.save(entity);
         assertTrue(entity.getId() > 0);
         assertEquals(name, entity.getName());
-        assertEquals(CustomSequentialIdData.class.getClass().getSimpleName(), entity.getIdSequenceName());
+        assertEquals(CustomSequentialIdData.class.getSimpleName(), entity.getIdSequenceName());
     }
 }

@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
-import tech.corefinance.common.mongodb.model.MongoSequense;
+import tech.corefinance.common.mongodb.model.MongoSequence;
 
 import java.util.Objects;
 
@@ -23,23 +23,21 @@ public class MongoSequenceCustomRepository {
     private static Object lock = new Object();
 
     public long nextSequence(String seqName) {
-        MongoSequense mongoSequense = mongoOperations.findAndModify(query(where("_id").is(seqName)),
+        MongoSequence mongoSequence = mongoOperations.findAndModify(query(where("_id").is(seqName)),
                 new Update().inc("seq",1), options().returnNew(true).upsert(true),
-                MongoSequense.class);
-        if (!Objects.isNull(mongoSequense)) {
-            return mongoSequense.sequense();
-        } else {
+                MongoSequence.class);
+        if (Objects.isNull(mongoSequence) || Objects.isNull(mongoSequence.sequence())) {
             synchronized (lock) {
                 // Double DB query for multiple thread processing
-                mongoSequense = mongoOperations.findAndModify(query(where("_id").is(seqName)),
-                        new Update().inc("seq",1), options().returnNew(true).upsert(true),
-                        MongoSequense.class);
-                if (Objects.isNull(mongoSequense)) {
-                    mongoSequense = new MongoSequense(seqName, 1);
-                    mongoSequenseRepository.save(mongoSequense);
+                mongoSequence = mongoOperations.findAndModify(query(where("_id").is(seqName)),
+                        new Update().inc("seq", 1), options().returnNew(true).upsert(true),
+                        MongoSequence.class);
+                if (Objects.isNull(mongoSequence) || Objects.isNull(mongoSequence.sequence())) {
+                    mongoSequence = new MongoSequence(seqName, 1L);
+                    mongoSequenseRepository.save(mongoSequence);
                 }
             }
-            return mongoSequense.sequense();
         }
+        return mongoSequence.sequence();
     }
 }
