@@ -33,13 +33,10 @@ public class CommonMongoConfig extends MongoConfigurationSupport {
 
     @Value("${spring.data.mongodb.database}")
     private String databaseName;
-    @Autowired
-    private List<MongoConversionSupport<?,?>> listConverters;
-    @Autowired
-    private List<CommonCustomConverter> commonCustomerConverters;
 
     @Bean
-    public MongoCustomConversions customConversions() {
+    public MongoCustomConversions customConversions(@Autowired List<MongoConversionSupport<?,?>> listConverters,
+                                                    @Autowired List<CommonCustomConverter> commonCustomerConverters) {
         List<MongoConversionSupport<?,?>> converters = new LinkedList<>(listConverters);
         for (var c : commonCustomerConverters) {
             converters.add((MongoConversionSupport) c::convert);

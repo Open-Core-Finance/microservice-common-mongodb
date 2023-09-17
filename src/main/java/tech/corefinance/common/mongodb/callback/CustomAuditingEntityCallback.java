@@ -9,8 +9,8 @@ import org.springframework.data.mongodb.core.mapping.event.AuditingEntityCallbac
 import org.springframework.stereotype.Component;
 import tech.corefinance.common.converter.ZonedDateTimeProvider;
 
-@Component
-@ConditionalOnProperty(name = "tech.corefinance.common-mongodb.converter.zonedDateTime", havingValue = "true", matchIfMissing = true)
+//@Component
+//@ConditionalOnProperty(name = "tech.corefinance.common-mongodb.converter.zonedDateTime", havingValue = "true", matchIfMissing = true)
 public class CustomAuditingEntityCallback extends AuditingEntityCallback {
 
     /**
