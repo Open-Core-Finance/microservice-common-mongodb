@@ -1,0 +1,12 @@
+[
+  {
+    "name": "SystemAdmin", "system": true,
+    "creator": {"username": "admin", "userId": "admin", "displayName": "System Admin"},
+    "lastModifiedBy": {"username": "admin", "userId": "admin", "displayName": "System Admin"}
+  },
+  {
+    "name": "SystemUser", "system": true,
+    "creator": {"username": "admin", "userId": "admin", "displayName": "System Admin"},
+    "lastModifiedBy": {"username": "admin", "userId": "admin", "displayName": "System Admin"}
+  }
+]

@@ -1,0 +1,28 @@
+[
+  {
+    "username": "admin", "email": "admin", "displayName": "System Admin",
+    "firstName": "Admin", "middleName":  "", "lastName":  "",
+    "phoneNumber": "", "password" : "$2a$10$VXilztBj3jmpzMHGd4lIj.Q5R.5aqo7t6H3MWSMO8HUTle3VpIkNa",
+    "gender": "MALE", "birthday": null, "address": "",
+    "userRoles": [
+      { "roleId": "SystemAdmin" }
+    ],
+    "creatorId": "admin", "creatorDisplayName": "System Admin",
+    "lastModifyUserId": "admin", "lastModifyUserDisplayName": "System Admin",
+    "usagePlatform": [ "WEB", "ANDROID", "IOS"]
+  },
+  {
+    "username": "user", "email": "user", "displayName": "System User",
+    "firstName": "User", "middleName":  "", "lastName":  "",
+    "phoneNumber": "", "password" : "$2a$10$VXilztBj3jmpzMHGd4lIj.Q5R.5aqo7t6H3MWSMO8HUTle3VpIkNa",
+    "gender": "MALE", "birthday": null, "address": "",
+    "userRoles": [
+      {
+        "roleId": "SystemUser", "resourceType": "", "resourceId": ""
+      }
+    ],
+    "creatorId": "admin", "creatorDisplayName": "System Admin",
+    "lastModifyUserId": "admin", "lastModifyUserDisplayName": "System Admin",
+    "usagePlatform": [ "WEB", "ANDROID", "IOS" ]
+  }
+]

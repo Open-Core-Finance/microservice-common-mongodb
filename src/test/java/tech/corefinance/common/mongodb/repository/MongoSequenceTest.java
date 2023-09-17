@@ -3,13 +3,13 @@ package tech.corefinance.common.mongodb.repository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.mongodb.config.EnableMongoAuditing;
 import org.springframework.test.context.ActiveProfiles;
 import tech.corefinance.common.mongodb.support.app.TestCommonApplication;
 import tech.corefinance.common.mongodb.support.model.CustomSequentialIdData;
 import tech.corefinance.common.mongodb.support.repository.CustomSequentialIdDataRepository;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest(classes = TestCommonApplication.class)
 @ActiveProfiles({"common", "default", "unittest"})
@@ -27,7 +27,7 @@ public class MongoSequenceTest {
         assertEquals(1, entity.getId());
         assertEquals(name, entity.getName());
         assertEquals(CustomSequentialIdData.class.getSimpleName(), entity.getIdSequenceName());
-        entity = customSequentialIdDataRepository.findById(entity.getId()).get();
+        assertNotNull(entity.getLastModifiedDate());
         assertNotNull(entity.getCreatedDate());
     }
 }
