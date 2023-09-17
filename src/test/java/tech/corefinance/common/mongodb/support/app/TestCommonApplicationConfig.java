@@ -12,16 +12,20 @@ import de.flapdoodle.reverse.TransitionWalker;
 import de.flapdoodle.reverse.transitions.Start;
 import jakarta.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
-import org.powermock.api.mockito.PowerMockito;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.mongodb.config.EnableMongoAuditing;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import tech.corefinance.common.context.ApplicationContextHolder;
 
 import java.util.List;
 
 @Configuration
 @Slf4j
+@EnableMongoRepositories(
+        {"tech.corefinance.common.mongodb.support.repository", "tech.corefinance.common.mongodb.repository"})
+@EnableMongoAuditing
 public class TestCommonApplicationConfig {
 
     @Value("${spring.data.mongodb.port}")

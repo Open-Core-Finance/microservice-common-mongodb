@@ -76,7 +76,7 @@ dependencies {
     api group: 'org.yaml', name: 'snakeyaml', version: "${snakeyamlVersion}"
 
     // Internal
-    api group: 'tech.corefinance', name: 'microservice-common', version: "${internalCommonVersion}"
+    implementation group: 'tech.corefinance', name: 'microservice-common', version: "${internalCommonVersion}"
 
     // Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
