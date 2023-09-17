@@ -2,7 +2,13 @@ package tech.corefinance.common.mongodb.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.AuditorAware;
+import org.springframework.data.mongodb.MongoDatabaseFactory;
+import org.springframework.data.mongodb.core.convert.DbRefResolver;
+import org.springframework.data.mongodb.core.convert.DefaultDbRefResolver;
+import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
+import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
 import tech.corefinance.common.context.JwtContext;
+import tech.corefinance.common.converter.CommonCustomConverter;
 import tech.corefinance.common.dto.BasicUserDto;
 import tech.corefinance.common.mongodb.converter.MongoConversionSupport;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +21,7 @@ import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import tech.corefinance.common.service.JwtService;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,11 +34,26 @@ public class CommonMongoConfig extends MongoConfigurationSupport {
     @Value("${spring.data.mongodb.database}")
     private String databaseName;
     @Autowired
-    private List<MongoConversionSupport<?,?>> listConverter;
+    private List<MongoConversionSupport<?,?>> listConverters;
+    @Autowired
+    private List<CommonCustomConverter> commonCustomerConverters;
 
     @Bean
     public MongoCustomConversions customConversions() {
-        return new MongoCustomConversions(listConverter);
+        List<MongoConversionSupport<?,?>> converters = new LinkedList<>(listConverters);
+        for (var c : commonCustomerConverters) {
+            converters.add((MongoConversionSupport) c::convert);
+        }
+        return new MongoCustomConversions(listConverters);
+    }
+
+    @Bean
+    MappingMongoConverter mappingMongoConverter(MongoDatabaseFactory factory, MongoMappingContext context,
+                                                MongoCustomConversions conversions) {
+        DbRefResolver dbRefResolver = new DefaultDbRefResolver(factory);
+        MappingMongoConverter mappingConverter = new MappingMongoConverter(dbRefResolver, context);
+        mappingConverter.setCustomConversions(conversions);
+        return mappingConverter;
     }
 
     @Override

@@ -13,6 +13,9 @@ import org.springframework.data.convert.WritingConverter;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
+/**
+ * Converter convert ChronoZonedDateTime like ZonedDateTime to MongoDB Document.
+ */
 @Component
 @ConditionalOnProperty(name = "tech.corefinance.common-mongodb.converter.zoned-date-time", havingValue = "true", matchIfMissing = true)
 @WritingConverter
