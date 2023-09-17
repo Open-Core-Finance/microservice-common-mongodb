@@ -2,28 +2,31 @@ package tech.corefinance.common.mongodb.config;
 
 import jakarta.validation.Validator;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.AuditorAware;
-import org.springframework.data.mongodb.MongoDatabaseFactory;
-import org.springframework.data.mongodb.core.convert.DbRefResolver;
-import org.springframework.data.mongodb.core.convert.DefaultDbRefResolver;
-import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
-import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
-import org.springframework.data.mongodb.core.mapping.event.LoggingEventListener;
-import org.springframework.data.mongodb.core.mapping.event.ValidatingMongoEventListener;
-import tech.corefinance.common.context.JwtContext;
-import tech.corefinance.common.converter.CommonCustomConverter;
-import tech.corefinance.common.dto.BasicUserDto;
-import tech.corefinance.common.mongodb.converter.MongoConversionSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.AuditorAware;
+import org.springframework.data.mongodb.MongoDatabaseFactory;
 import org.springframework.data.mongodb.config.MongoConfigurationSupport;
+import org.springframework.data.mongodb.core.convert.DbRefResolver;
+import org.springframework.data.mongodb.core.convert.DefaultDbRefResolver;
+import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
 import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
+import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
+import org.springframework.data.mongodb.core.mapping.event.LoggingEventListener;
+import org.springframework.data.mongodb.core.mapping.event.ValidatingMongoEventListener;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import tech.corefinance.common.context.JwtContext;
+import tech.corefinance.common.converter.DateToZonedDateTimeConverter;
+import tech.corefinance.common.converter.ZonedDateTimeToDateConverter;
+import tech.corefinance.common.dto.BasicUserDto;
+import tech.corefinance.common.mongodb.converter.MongoConversionSupport;
 import tech.corefinance.common.service.JwtService;
 
+import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -39,11 +42,11 @@ public class CommonMongoConfig extends MongoConfigurationSupport {
 
     @Bean
     public MongoCustomConversions customConversions(@Autowired List<MongoConversionSupport<?,?>> listConverters,
-                                                    @Autowired List<CommonCustomConverter> commonCustomerConverters) {
+                                                    @Autowired DateToZonedDateTimeConverter dateToZonedDateTimeConverter,
+                                                    @Autowired ZonedDateTimeToDateConverter zonedDateTimeToDateConverter) {
         List<MongoConversionSupport<?,?>> converters = new LinkedList<>(listConverters);
-        for (var c : commonCustomerConverters) {
-            converters.add((MongoConversionSupport) c::convert);
-        }
+        converters.add((MongoConversionSupport<Date, ZonedDateTime>) dateToZonedDateTimeConverter::convert);
+        converters.add((MongoConversionSupport<ZonedDateTime, Date>) zonedDateTimeToDateConverter::convert);
         return new MongoCustomConversions(listConverters);
     }
 
