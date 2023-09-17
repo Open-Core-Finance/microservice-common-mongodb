@@ -61,12 +61,6 @@ tech:
         internal-api:
           file-name-regex: classpath:initial/*internal_api*.json
           replace-if-existed: true
-        role:
-          file-name-regex: classpath:initial/*role*.json
-          replace-if-existed: true
-        user:
-          file-name-regex: classpath:initial/*users*.json
-          replace-if-existed: true
 export:
   format:
     date: yyyy/MM/dd

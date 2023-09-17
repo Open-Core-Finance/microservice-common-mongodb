@@ -1,5 +1,6 @@
 package tech.corefinance.common.mongodb.config;
 
+import jakarta.validation.Validator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.mongodb.MongoDatabaseFactory;
@@ -7,6 +8,8 @@ import org.springframework.data.mongodb.core.convert.DbRefResolver;
 import org.springframework.data.mongodb.core.convert.DefaultDbRefResolver;
 import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
 import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
+import org.springframework.data.mongodb.core.mapping.event.LoggingEventListener;
+import org.springframework.data.mongodb.core.mapping.event.ValidatingMongoEventListener;
 import tech.corefinance.common.context.JwtContext;
 import tech.corefinance.common.converter.CommonCustomConverter;
 import tech.corefinance.common.dto.BasicUserDto;
@@ -70,5 +73,16 @@ public class CommonMongoConfig extends MongoConfigurationSupport {
             log.error("AuditorAware<BasicUserDto> get user from JwtContext.");
             return Optional.of(user);
         };
+    }
+
+    @Bean
+    ValidatingMongoEventListener validatingMongoEventListener(Validator validator) {
+        log.debug("MongoDB validator [{}]=[{}]", validator.getClass().getName(), validator);
+        return new ValidatingMongoEventListener(validator);
+    }
+
+    @Bean
+    LoggingEventListener loggingEventListener() {
+        return new LoggingEventListener();
     }
 }

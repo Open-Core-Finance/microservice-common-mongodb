@@ -36,6 +36,7 @@
 	<!-- Spring framework logs. Should not turn to debug unless you know what you're doing. It's annoyed!!! -->
 	<logger name="org.springframework" level="ERROR" />
 	<logger name="org.springframework.security" level="DEBUG" />
+	<logger name="org.springframework.data.mongodb.core.mapping.event" level="INFO" />
 
 	<root level="INFO">
 		<appender-ref ref="STDOUT" />
