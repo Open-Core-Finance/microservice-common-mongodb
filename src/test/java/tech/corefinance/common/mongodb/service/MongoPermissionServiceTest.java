@@ -1,4 +1,4 @@
-package tech.corefinance.common.mongodb.services;
+package tech.corefinance.common.mongodb.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
