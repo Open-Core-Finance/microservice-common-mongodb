@@ -10,7 +10,6 @@ import tech.corefinance.common.mongodb.model.MongoInternalServiceConfig;
 import tech.corefinance.common.mongodb.model.MongoPermission;
 import tech.corefinance.common.mongodb.model.MongoResourceAction;
 import tech.corefinance.common.service.AbstractPermissionService;
-import tech.corefinance.common.mongodb.service.LocalResourceEntityInitializer;
 
 import java.util.LinkedHashMap;
 import java.util.List;
