@@ -10,13 +10,14 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestMethod;
 import tech.corefinance.common.mongodb.model.MongoPermission;
 import tech.corefinance.common.repository.PermissionRepository;
+import tech.corefinance.common.service.SimpleSearchSupport;
 
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface MongoPermissionRepository extends MongoRepository<MongoPermission, String>,
-        PermissionRepository<MongoPermission> {
+        PermissionRepository<MongoPermission>, SimpleSearchSupport<MongoPermission> {
 
     Optional<MongoPermission> findFirstByRoleIdAndResourceTypeAndActionAndUrlAndRequestMethod(String roleId, String resourceType, String action, String url, RequestMethod requestMethod);
 
@@ -28,6 +29,16 @@ public interface MongoPermissionRepository extends MongoRepository<MongoPermissi
             + ",{'requestMethod': { $regex: :#{#search}, $options: 'i' }}" + "]}";
 
     @Query(searchByQuery)
-    Page<MongoPermission> searchBy(@Param("search") String searchText, Pageable pageRequest);
+    Page<MongoPermission> searchBy(@Param("search") String searchText, Pageable pageable);
 
+    @Query(searchByQuery)
+    List<MongoPermission> searchBy(@Param("search") String searchText, Sort sort);
+
+    default Page<MongoPermission> searchByTextAndPage(String searchText, Pageable pageable) {
+        return searchBy(searchText, pageable);
+    }
+
+    default List<MongoPermission> searchByTextAndSort(String searchText, Sort sort) {
+        return searchBy(searchText, sort);
+    }
 }

@@ -3,12 +3,16 @@ package tech.corefinance.common.mongodb.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMethod;
 import tech.corefinance.common.mongodb.model.MongoInternalServiceConfig;
 import tech.corefinance.common.mongodb.model.MongoPermission;
 import tech.corefinance.common.mongodb.model.MongoResourceAction;
+import tech.corefinance.common.mongodb.repository.MongoPermissionRepository;
 import tech.corefinance.common.service.AbstractPermissionService;
 
 import java.util.LinkedHashMap;
