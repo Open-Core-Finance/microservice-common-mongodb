@@ -22,7 +22,7 @@ import java.util.Map;
 @Service
 @Transactional
 @Getter
-public class MongoPermissionService implements PermissionService<MongoPermission, MongoInternalServiceConfig, MongoResourceAction>, InitialSupportService {
+public class MongoPermissionService implements PermissionService<MongoPermission, MongoResourceAction>, InitialSupportService {
 
     protected Map<String, LocalResourceEntityInitializer<? extends Object>> listInitialNamesSupported;
     @Autowired
