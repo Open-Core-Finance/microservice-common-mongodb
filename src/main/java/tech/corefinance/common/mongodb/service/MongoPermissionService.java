@@ -3,17 +3,17 @@ package tech.corefinance.common.mongodb.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMethod;
 import tech.corefinance.common.mongodb.model.MongoInternalServiceConfig;
 import tech.corefinance.common.mongodb.model.MongoPermission;
 import tech.corefinance.common.mongodb.model.MongoResourceAction;
+import tech.corefinance.common.mongodb.repository.MongoInternalServiceConfigRepository;
 import tech.corefinance.common.mongodb.repository.MongoPermissionRepository;
-import tech.corefinance.common.service.AbstractPermissionService;
+import tech.corefinance.common.repository.PermissionRepository;
+import tech.corefinance.common.service.PermissionService;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -22,10 +22,18 @@ import java.util.Map;
 @Service
 @Transactional
 @Getter
-public class MongoPermissionService extends AbstractPermissionService<MongoPermission, MongoInternalServiceConfig, MongoResourceAction>
-        implements InitialSupportService {
+public class MongoPermissionService implements PermissionService<MongoPermission, MongoInternalServiceConfig, MongoResourceAction>, InitialSupportService {
 
     protected Map<String, LocalResourceEntityInitializer<? extends Object>> listInitialNamesSupported;
+    @Autowired
+    private MongoPermissionRepository permissionRepository;
+    @Autowired
+    private MongoInternalServiceConfigRepository internalServiceConfigRepository;
+
+    @Override
+    public PermissionRepository<MongoPermission> getRepository() {
+        return permissionRepository;
+    }
 
     @Override
     public @NotNull MongoPermission createEntityObject() {
