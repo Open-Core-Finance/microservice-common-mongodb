@@ -15,8 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface MongoPermissionRepository extends MongoRepository<MongoPermission, String>,
-        PermissionRepository<MongoPermission> {
+public interface MongoPermissionRepository extends MongoRepository<MongoPermission, String>, PermissionRepository<MongoPermission> {
 
     Optional<MongoPermission> findFirstByRoleIdAndResourceTypeAndActionAndUrlAndRequestMethod(String roleId, String resourceType, String action, String url, RequestMethod requestMethod);
 
@@ -28,6 +27,8 @@ public interface MongoPermissionRepository extends MongoRepository<MongoPermissi
             + ",{'requestMethod': { $regex: :#{#search}, $options: 'i' }}" + "]}";
 
     @Query(searchByQuery)
-    Page<MongoPermission> searchBy(@Param("search") String searchText, Pageable pageRequest);
+    Page<MongoPermission> searchBy(@Param("search") String searchText, Pageable pageable);
 
+    @Query(searchByQuery)
+    List<MongoPermission> searchBy(@Param("search") String searchText, Sort sort);
 }
