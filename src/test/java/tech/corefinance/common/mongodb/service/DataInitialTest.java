@@ -5,8 +5,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import tech.corefinance.common.mongodb.model.MongoPermission;
+import tech.corefinance.common.model.Permission;
 import tech.corefinance.common.mongodb.support.app.TestCommonApplication;
+import tech.corefinance.common.service.PermissionService;
 
 import java.io.IOException;
 import java.util.List;
@@ -19,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class DataInitialTest {
 
     @Autowired
-    private MongoPermissionService mongoPermissionService;
+    private PermissionInitialService mongoPermissionService;
 
     @BeforeEach
     public void setUp() {
@@ -28,7 +29,7 @@ public class DataInitialTest {
     @Test
     public void test_initial_default_data() throws IOException {
         var result = mongoPermissionService.initializationDefaultData();
-        var permissions = (List<MongoPermission>) result.get("permission");
+        var permissions = (List<Permission>) result.get("permission");
         assertEquals(3, permissions.size());
     }
 }

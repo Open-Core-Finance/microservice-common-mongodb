@@ -7,19 +7,12 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.RequestMethod;
-import tech.corefinance.common.mongodb.model.MongoPermission;
-import tech.corefinance.common.repository.PermissionRepository;
+import tech.corefinance.common.model.Permission;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
-public interface MongoPermissionRepository extends MongoRepository<MongoPermission, String>, PermissionRepository<MongoPermission> {
-
-    Optional<MongoPermission> findFirstByRoleIdAndResourceTypeAndActionAndUrlAndRequestMethod(String roleId, String resourceType, String action, String url, RequestMethod requestMethod);
-
-    List<MongoPermission> findAllByRoleIdAndResourceType(String roleId, String resourceType, Sort sort);
+public interface MongoPermissionRepository extends MongoRepository<Permission, String> {
 
     String searchByQuery = "{$or: [" + "{'roleId': { $regex: :#{#search}, $options: 'i' }}"
             + ",{'resourceType': { $regex: :#{#search}, $options: 'i' }}" + ",{'action': { $regex: :#{#search}, $options: 'i' }}"
@@ -27,8 +20,8 @@ public interface MongoPermissionRepository extends MongoRepository<MongoPermissi
             + ",{'requestMethod': { $regex: :#{#search}, $options: 'i' }}" + "]}";
 
     @Query(searchByQuery)
-    Page<MongoPermission> searchBy(@Param("search") String searchText, Pageable pageable);
+    Page<Permission> searchBy(@Param("search") String searchText, Pageable pageable);
 
     @Query(searchByQuery)
-    List<MongoPermission> searchBy(@Param("search") String searchText, Sort sort);
+    List<Permission> searchBy(@Param("search") String searchText, Sort sort);
 }
