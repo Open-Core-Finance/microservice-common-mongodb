@@ -2,16 +2,18 @@ package tech.corefinance.common.mongodb.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import tech.corefinance.common.service.PermissionService;
+import tech.corefinance.common.service.PermissionServiceImpl;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class MongoPermissionServiceTest {
 
-    private MongoPermissionService mongoPermissionService;
+    private PermissionService mongoPermissionService;
 
     @BeforeEach
     public void setUp() {
-        mongoPermissionService = new MongoPermissionService();
+        mongoPermissionService = new PermissionServiceImpl();
     }
 
     @Test
